@@ -74,7 +74,13 @@
 #                                                                     #
 # Variables may be redefined and may reference other variables.       #
 # Value expansion happens at the time the tag is read.                #
-<define name="bindip" value="1.2.2.3">
+
+<define
+        # name: name of the varible
+        name="bindip"
+
+        # value: value the varible will take
+        value="1.2.2.3">
 <define name="localips" value="&bindip;/24">
 
 #-#-#-#-#-#-#-#-#-#-#-#-  SERVER DESCRIPTION  -#-#-#-#-#-#-#-#-#-#-#-#-
@@ -231,10 +237,10 @@
 
 <connect
          # deny: Will not let people connect if they have specified host/IP.
-         deny="192.0.2.*">
+         deny="3ffe::0/32"
 
-# connect:reason is the message that users will see if they match a deny block
-<connect deny="3ffe::0/32" reason="The 6bone address space is deprecated">
+         # reason: The message that users will see if they match a deny block.
+         reason="The 6bone address space is deprecated">
 
 <connect
          # name: Name to use for this connect block. Mainly used for
@@ -327,21 +333,9 @@
          port="6697">
 
 <connect
-         # name: Name to use for this connect block. Mainly used for
-         # connect class inheriting.
          name="main"
-
-         # allow: What IP addresses/hosts to allow for this block.
          allow="*"
-
-         # maxchans: Maximum number of channels a user in this class
-         # be in at one time.
          maxchans="20"
-
-         # timeout: How long (in seconds) the server will wait before
-         # disconnecting a user if they do not do anything on connect.
-         # (Note, this is a client-side thing, if the client does not
-         # send /nick, /user or /pass)
          timeout="10"
 
          # pingfreq: How often (in seconds) the server tries to ping connecting clients.
@@ -385,31 +379,15 @@
          # quit with "RecvQ exceeded" rather than "Excess Flood".
          fakelag="on"
 
-         # localmax: Maximum local connections per IP.
          localmax="3"
-
-         # globalmax: Maximum global (network-wide) connections per IP.
          globalmax="3"
-
-         # resolvehostnames: If disabled, no DNS lookups will be performed on connecting users
-         # in this class. This can save a lot of resources on very busy servers.
          resolvehostnames="yes"
-
-         # useident: Defines if users in this class must respond to a ident query or not.
          useident="no"
-
-         # limit: How many users are allowed in this class
          limit="5000"
-
-         # modes: Usermodes that are set on users in this block on connect.
-         # Enabling this option requires that the m_conn_umodes module be loaded.
-         # This entry is highly recommended to use for/with IP Cloaking/masking.
-         # For the example to work, this also requires that the m_cloaking
-         # module be loaded as well.
          modes="+x">
 
 
-#-#-#-#-#-#-#-#-#-#-#-#-  CIDR CONFIGURATION   -#-#-#-#-#-#-#-#-#-#-#-
+#-#-#-#-#-#-#-#-#-#-#-#-  CIDR CONFIGURATION   -#-#-#-#-#-#-#-#-#-#-#-#
 #                                                                     #
 # CIDR configuration allows detection of clones and applying of       #
 # throttle limits across a CIDR range. (A CIDR range is a group of    #
@@ -446,9 +424,10 @@
 
 # Files block - contains files whose contents are used by the ircd
 #
-#   motd - displayed on connect and when a user executes /MOTD
-# Modules can also define their own files
-<files motd="examples/motd.txt.example">
+<files
+        # motd: displayed on connect and when a user executes /MOTD
+        # Modules can also define their own files
+        motd="examples/motd.txt.example">
 
 # Example of an executable file include. Note this will be read on rehash,
 # not when the command is run.
@@ -466,7 +445,7 @@
      # Note that this must be an IP address and not a hostname, because
      # there is no resolver to resolve the name until this is defined!
      #
-     # server="127.0.0.1"
+     #server="127.0.0.1"
 
      # timeout: seconds to wait to try to resolve DNS/hostname.
      timeout="5">
@@ -484,7 +463,9 @@
 # the default of 'inspircd.pid' is used.                              #
 #                                                                     #
 
-#<pid file="/path/to/inspircd.pid">
+<pid
+     # file: path to the pid file
+     file="/path/to/inspircd.pid">
 
 #-#-#-#-#-#-#-#-#-#-#-#-#- BANLIST LIMITS #-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 #                                                                     #
@@ -496,7 +477,13 @@
 # matched, the banlist size defaults to 64 entries.                   #
 #                                                                     #
 
-<banlist chan="#morons" limit="128">
+<banlist
+         # chan:
+	 chan="#morons"
+
+	 # limit:
+	 limit="128">
+
 <banlist chan="*" limit="69">
 
 #-#-#-#-#-#-#-#-#-#-#-  DISABLED FEATURES  -#-#-#-#-#-#-#-#-#-#-#-#-#-#
@@ -510,13 +497,19 @@
 # 'registered' (e.g. after the initial USER/NICK/PASS on connection)  #
 # so for example disabling NICK will not cripple your network.        #
 #                                                                     #
-# You can also define if you want to disable any channelmodes         #
-# or usermodes from your users.                                       #
-#                                                                     #
-# `fakenonexistant' will make the ircd pretend that nonexistant       #
-# commands simply don't exist to non-opers ("no such command").       #
-#                                                                     #
-#<disabled commands="TOPIC MODE" usermodes="" chanmodes="" fakenonexistant="yes">
+<disabled
+	  # commands: commands to disable
+          commands="TOPIC MODE"
+
+	  # usermodes: usermodes to disable
+	  usermodes=""
+
+	  # chanmodes: channmodes to diable
+	  chanmodes=""
+
+          # fakenonexistant: make the ircd pretend that disabled
+          # commands simply don't exist to non-opers ("no such command").
+          fakenonexistant="yes">
 
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-  RTFM LINE  -#-#-#-#-#-#-#-#-#-#-#-#-#-#
@@ -544,8 +537,8 @@
 
          # prefixpart: What (if anything) users' part messages
          # should be prefixed with.
-         prefixpart="&quot;"
          # NOTE: Use "\"" instead of "&quot;" if not using <config format="xml">
+         prefixpart="&quot;"
 
          # suffixpart: What (if anything) users' part message
          # should be suffixed with.
@@ -802,9 +795,7 @@
 # where you do not have the ability to set build time configuration.  #
 #<path configdir="conf" datadir="data" logdir="logs" moduledir="modules">
 
-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-# Logging
-# -------
+#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-# Logging #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 #
 # Logging is covered with the <log> tag, which you may use to change
 # the behaviour of the logging of the IRCd.
@@ -819,27 +810,6 @@
 # which would log all information on /oper (failed and successful) to
 # a file called opers.log.
 #
-# There are many different types which may be used, and modules may
-# generate their own. A list of useful types:
-#  - USERS - information relating to user connection and disconnection
-#  - OPER - succesful and failed oper attempts
-#  - KILL - kill related messages
-#  - snomask - server notices (*all* snomasks will be logged)
-#  - FILTER - messages related to filter matches (m_filter)
-#  - CONFIG - configuration related messages
-#  - COMMAND - die and restart messages, and messages related to unknown user types
-#  - SOCKET - socket engine informational/error messages
-#  - MODULE - module related messages
-#  - STARTUP - messages related to starting up the server
-#
-# You may also log *everything* by using a type of *, and subtract things out
-# of that by using -TYPE - for example "* -USERINPUT -USEROUTPUT".
-#
-# Useful levels are:
-#  - default (general messages, including errors)
-#  - sparse (misc error messages)
-#  - debug (debug messages)
-#
 # Some types only produce output in the debug level, those are:
 #  - BANCACHE - ban cache debug messages
 #  - CHANNELS - information relating to joining/creating channels
@@ -852,7 +822,33 @@
 # The following log tag is highly default and uncustomised. It is recommended you
 # sort out your own log tags. This is just here so you get some output.
 
-<log method="file" type="* -USERINPUT -USEROUTPUT" level="default" target="ircd.log">
+<log
+     method="file"
+
+     # type: There are many different types which may be used, and modules may
+     # generate their own. A list of useful types:
+     #  - USERS - information relating to user connection and disconnection
+     #  - OPER - succesful and failed oper attempts
+     #  - KILL - kill related messages
+     #  - snomask - server notices (*all* snomasks will be logged)
+     #  - FILTER - messages related to filter matches (m_filter)
+     #  - CONFIG - configuration related messages
+     #  - COMMAND - die and restart messages, and messages related to unknown user types
+     #  - SOCKET - socket engine informational/error messages
+     #  - MODULE - module related messages
+     #  - STARTUP - messages related to starting up the server
+     #
+     # You may also log *everything* by using a type of *, and subtract things out
+     # of that by using -TYPE - for example "* -USERINPUT -USEROUTPUT".
+     type="* -USERINPUT -USEROUTPUT"
+
+     # levels: Useful levels are:
+     #  - default (general messages, including errors)
+     #  - sparse (misc error messages)
+     #  - debug (debug messages)
+     level="default"
+
+     target="ircd.log">
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-  WHOWAS OPTIONS   -#-#-#-#-#-#-#-#-#-#-#-#-#
 #                                                                     #
